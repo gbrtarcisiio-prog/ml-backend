@@ -10,30 +10,9 @@ const API_KEY = process.env.API_KEY;
 const HYPEPAY_URL = "https://api.hyperpaybank.com/v1/transactions";
 
 /*
-CONFIGURAÇÃO CORS CORRETA
+CORS LIBERADO TOTAL (para produção simples)
 */
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://ml-front-omega.vercel.app"
-];
-
-app.use(cors({
-  origin: function (origin, callback) {
-    // permite chamadas sem origin (ex: Postman)
-    if (!origin) return callback(null, true);
-
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type"],
-  credentials: true
-}));
-
-app.options("*", cors()); // garante resposta ao preflight
+app.use(cors());
 
 app.use(express.json());
 
@@ -42,7 +21,6 @@ CRIAR COBRANÇA PIX
 */
 app.post("/api/payment/create", async (req, res) => {
   try {
-
     const response = await axios.post(
       HYPEPAY_URL,
       req.body,
@@ -57,15 +35,8 @@ app.post("/api/payment/create", async (req, res) => {
     res.json(response.data);
 
   } catch (error) {
-
     console.log("Erro ao criar cobrança:");
-
-    if (error.response) {
-      console.log(error.response.status);
-      console.log(error.response.data);
-    } else {
-      console.log(error.message);
-    }
+    console.log(error.response?.data || error.message);
 
     res.status(500).json({
       error: "Erro ao criar cobrança",
@@ -74,13 +45,11 @@ app.post("/api/payment/create", async (req, res) => {
   }
 });
 
-
 /*
 CONSULTAR STATUS
 */
 app.get("/api/payment/status/:id", async (req, res) => {
   try {
-
     const response = await axios.get(
       `${HYPEPAY_URL}/${req.params.id}`,
       {
@@ -93,7 +62,6 @@ app.get("/api/payment/status/:id", async (req, res) => {
     res.json(response.data);
 
   } catch (error) {
-
     console.log("Erro ao consultar cobrança:");
     console.log(error.response?.data || error.message);
 
