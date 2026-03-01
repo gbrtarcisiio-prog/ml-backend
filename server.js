@@ -12,7 +12,7 @@ const HYPEPAY_URL = "https://api.hyperpaybank.com/v1/transactions";
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://analisemercadopag0.com"
+    "https://analisemercado.vercel.app/"
   ]
 }));
 
@@ -87,4 +87,5 @@ app.get("/api/payment/status/:id", async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
+
 });
