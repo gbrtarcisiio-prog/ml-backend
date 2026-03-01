@@ -12,7 +12,7 @@ const HYPEPAY_URL = "https://api.hyperpaybank.com/v1/transactions";
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://analisemercado.vercel.app/"
+    "https://ml-front-omega.vercel.app/"
   ]
 }));
 
@@ -89,3 +89,4 @@ app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 
 });
+
